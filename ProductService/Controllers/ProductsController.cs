@@ -39,5 +39,17 @@ namespace ProductService.Controllers
             IQueryable<Product> result = db.Products.Where(p => p.Id == key);
             return SingleResult.Create(result);
         }
+
+
+        public async Task<IHttpActionResult> Post(Product product)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            db.Products.Add(product);
+            await db.SaveChangesAsync();
+            return Created(product);
+        }
     }
 }
